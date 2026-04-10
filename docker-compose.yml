@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    container_name: price-bot
+    volumes:
+      - /home/martinss/Documentos/vendaOnline:/app
+      - /db:/database
+    environment:
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+    working_dir: /app
+    command: node src/index.js
