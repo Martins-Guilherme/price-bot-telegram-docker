@@ -1,11 +1,14 @@
 services:
   app:
-    build: .
+    build:
+      context: /home/martinss/vendaOnline
+      dockerfile: /home/martinss/Docker/sqlite-bot/Dockerfile
     container_name: price-bot
     volumes:
-      - /home/martinss/Documentos/vendaOnline:/app
-      - /db:/database
-    environment:
-      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+      - ./db:/database
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
     working_dir: /app
     command: node src/index.js
