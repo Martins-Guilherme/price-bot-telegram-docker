@@ -1,8 +1,10 @@
 FROM node:20
 
-RUN apt-get update && apt-get install -y python3 make g++
-
+# Dependências nativas
 RUN apt-get update && apt-get install -y \
+  python3 \
+  make \
+  g++ \
   chromium \
   fonts-liberation \
   libatk-bridge2.0-0 \
@@ -18,21 +20,17 @@ RUN apt-get update && apt-get install -y \
   libnss3 \
   libxss1 \
   libgtk-3-0 \
-  ca-certificates
-
-RUN npm install -g pnpm
+  ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
+COPY package*.json ./
+
+RUN npm install
+
 COPY . .
 
-ENV CI=true
-
-# instala dependências
-RUN pnpm install
-
-# 🔥 FORÇA BUILD REAL DO SQLITE
-RUN cd node_modules/.pnpm/better-sqlite3@*/node_modules/better-sqlite3 && \
-    npm run build-release
+RUN npm rebuild better-sqlite3
 
 CMD ["node", "src/index.js"]
