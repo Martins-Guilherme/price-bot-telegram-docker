@@ -30,6 +30,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 RUN npm rebuild better-sqlite3
 
